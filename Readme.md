@@ -4,7 +4,7 @@
 
 ##### Install pip to set up dependencies
 
-```pip install -r doc/reqs```
+```pip install -r reqs```
 
 ##### Run Migrations
 
