@@ -1,5 +1,3 @@
-import json
-
 from django.test import TestCase
 from django.test import Client
 from django.urls import reverse
@@ -43,7 +41,7 @@ class TestApi(TestCase):
         url = reverse('api:document-list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        document = Document.objects.create(
+        Document.objects.create(
             **self.get_data(),
         )
         self.assertEqual(Document.objects.count(), 1)
