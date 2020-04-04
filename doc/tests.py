@@ -18,6 +18,17 @@ class TestApi(TestCase):
             'type': 'type',
             'source_type': '.txt',
             'source_id': '1',
+            'input_meta_data': """{"menu": {
+                "id": "file",
+                "value": "File",
+                "popup": {
+                    "menuitem": [
+                    {"value": "New", "onclick": "CreateNewDoc()"},
+                    {"value": "Open", "onclick": "OpenDoc()"},
+                    {"value": "Close", "onclick": "CloseDoc()"}
+                    ]
+                }
+            }}"""
         }
         return kwargs
 
@@ -27,15 +38,6 @@ class TestApi(TestCase):
             **self.get_data(),
         )
         self.assertEqual(Document.objects.count(), 1)
-
-    def test_form(self):
-        data = self.get_data()
-        data['owner'] = self.user.id
-        form = DocumentForm(data)
-        self.assertEqual(form.is_valid(), True)
-        data.pop('owner')
-        form = DocumentForm(data)
-        self.assertEqual(form.is_valid(), False)
 
     def test_get(self):
         url = reverse('api:document-list')
@@ -65,16 +67,16 @@ class TestApi(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         response = self.client.delete(url)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 204)
 
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
 
     def test_create(self):
         data = self.get_data()
-        data['user_id'] = self.user.id
+        data['owner'] = data['owner'].id
         url = reverse('api:document-list')
         self.assertEqual(Document.objects.count(), 0)
         response = self.client.post(url, data=data)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 201)
         self.assertEqual(Document.objects.count(), 1)
