@@ -10,11 +10,11 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['url', 'username', 'email', 'groups']
 
 
-class DocumentSerializer(serializers.HyperlinkedModelSerializer):
+class DocumentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Document
         fields = [
-            'id', 'created_time', 'type', 'source_type', 'source_id', 'input_meta_data',
+            'id', 'owner',  'created_time', 'type', 'source_type', 'source_id', 'input_meta_data',
         ]
 
 
