@@ -16,4 +16,4 @@ class Document(models.Model):
         choices=SOURCE_CHOICES, blank=True, null=True, max_length=100
     )
     source_id = models.CharField(blank=True, null=True, max_length=20)
-    input_meta_data = JSONField(default=None, null=True, blank=True)
+    input_meta_data = JSONField(default=dict, null=True, blank=True)
